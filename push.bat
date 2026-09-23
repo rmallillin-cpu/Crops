@@ -51,16 +51,44 @@ if errorlevel 1 (
     echo Nothing new to commit, or commit failed - continuing to push anyway.
 )
 
+REM --- Pull and merge any changes that exist on GitHub but not locally ---
+REM (e.g. edits made directly in the GitHub web editor) before pushing,
+REM so a normal push never gets rejected for being behind.
+echo.
+echo Checking for changes on GitHub not yet in your local copy...
+git fetch origin main >nul 2>nul
+
+git merge-base --is-ancestor origin/main HEAD >nul 2>nul
+if errorlevel 1 (
+    echo Remote has commits you don't have locally - merging them in...
+    git pull --no-rebase origin main
+    if errorlevel 1 (
+        echo.
+        echo [ERROR] Automatic merge failed - likely a conflict in one or more
+        echo files ^(open them, look for ^<^<^<^<^<^<^<, =======, ^>^>^>^>^>^>^> markers,
+        echo pick the correct content, delete the markers, save^).
+        echo Then run:
+        echo     git add .
+        echo     git commit -m "Merge remote changes"
+        echo     git push -u origin main
+        echo Do NOT use --force unless you are certain you want to permanently
+        echo overwrite what's currently on GitHub.
+        pause
+        exit /b 1
+    )
+    echo Merge complete.
+)
+
 echo.
 echo Pushing to !REPO_URL! ...
 git push -u origin main
 
 if errorlevel 1 (
     echo.
-    echo [ERROR] Push failed. If this is your first push and the repo already
-    echo has commits on GitHub ^(like a README^), try:
-    echo     git push -u origin main --force
-    echo Only use --force if you're sure you want to overwrite what's on GitHub.
+    echo [ERROR] Push still failed after merging. Run "git status" to see
+    echo what's going on, resolve any remaining issues, then re-run this
+    echo script. Do NOT use --force unless you are certain you want to
+    echo permanently overwrite what's currently on GitHub.
     pause
     exit /b 1
 )
@@ -68,6 +96,6 @@ if errorlevel 1 (
 echo.
 echo ==========================================================
 echo  Done. Check your repo on GitHub - src/ and public/ should
-echo  now both be there. Then redeploy on Vercel.
+echo  now both be there. Render will redeploy automatically.
 echo ==========================================================
 pause
