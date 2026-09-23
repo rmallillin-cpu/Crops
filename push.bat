@@ -61,13 +61,13 @@ git fetch origin main >nul 2>nul
 git merge-base --is-ancestor origin/main HEAD >nul 2>nul
 if errorlevel 1 (
     echo Remote has commits you don't have locally - merging them in...
-    git pull --no-rebase origin main
+    echo (If anything conflicts, your LOCAL files will automatically win.)
+    git pull --no-rebase --allow-unrelated-histories -X ours origin main
     if errorlevel 1 (
         echo.
-        echo [ERROR] Automatic merge failed - likely a conflict in one or more
-        echo files ^(open them, look for ^<^<^<^<^<^<^<, =======, ^>^>^>^>^>^>^> markers,
-        echo pick the correct content, delete the markers, save^).
-        echo Then run:
+        echo [ERROR] Merge failed for a reason auto-resolution couldn't handle
+        echo ^(e.g. a deleted file vs. an edited file^). Run "git status" to see
+        echo what's unresolved, fix it by hand, then run:
         echo     git add .
         echo     git commit -m "Merge remote changes"
         echo     git push -u origin main
@@ -76,7 +76,7 @@ if errorlevel 1 (
         pause
         exit /b 1
     )
-    echo Merge complete.
+    echo Merge complete - local files were kept wherever content differed.
 )
 
 echo.
