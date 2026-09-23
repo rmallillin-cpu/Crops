@@ -158,7 +158,14 @@ export async function findAllowedUser(email: string): Promise<AllowedUser | null
   const users = await getAllowedUsers();
   const fromSheet = users.find((u) => u.email === normalized) || null;
 
-  if (adminList.includes(normalized)) {
+  // An ADMIN_EMAILS entry that starts with "@" matches the whole domain
+  // (e.g. "@psa.gov.ph" grants admin to any user@psa.gov.ph address),
+  // instead of requiring every individual address to be listed.
+  const isAdmin = adminList.some((entry) =>
+    entry.startsWith("@") ? normalized.endsWith(entry) : entry === normalized
+  );
+
+  if (isAdmin) {
     return {
       email: normalized,
       name: fromSheet?.name || "Admin",
