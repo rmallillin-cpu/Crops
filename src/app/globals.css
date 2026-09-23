@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-ledger-line;
+  }
+
+  body {
+    background-image: var(--tw-gradient-stops, none);
+    background-image: radial-gradient(circle at 0% 0%, rgba(29, 78, 216, 0.05), transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.04), transparent 40%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: #f59e0b;
+    color: #172e7c;
+  }
+
+  :focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .field-number {
+    @apply font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-cavite-blue/60;
+  }
+
+  .ledger-card {
+    @apply rounded-2xl border border-ledger-line bg-white shadow-stamp transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-cavite-blue px-5 py-2.5
+      text-sm font-semibold text-white shadow-sm transition-all duration-150
+      hover:-translate-y-0.5 hover:bg-cavite-bluedeep hover:shadow-md
+      active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ledger-line
+      bg-white px-5 py-2.5 text-sm font-semibold text-cavite-blue shadow-sm transition-all
+      duration-150 hover:-translate-y-0.5 hover:border-cavite-blue/40 hover:bg-cavite-blue/5
+      active:translate-y-0;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+/* Custom checkbox that pops like a stamp mark, matching the PSA form's tick-mark idiom */
+.stamp-check {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid rgba(27, 32, 48, 0.18);
+  border-radius: 6px;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+}
+
+.stamp-check:hover {
+  transform: scale(1.05);
+}
+
+.stamp-check::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transition: transform 0.15s ease;
+  background-color: currentColor;
+}
+
+.stamp-check:checked::before {
+  transform: scale(1);
+}
+
+.stamp-check.c-major {
+  color: #1d4ed8;
+}
+.stamp-check.c-major:checked {
+  border-color: #1d4ed8;
+  background: #eef2ff;
+}
+
+.stamp-check.c-priority {
+  color: #f59e0b;
+}
+.stamp-check.c-priority:checked {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.stamp-check.c-emerging {
+  color: #16a34a;
+}
+.stamp-check.c-emerging:checked {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+.stamp-check.c-others {
+  color: #64748b;
+}
+.stamp-check.c-others:checked {
+  border-color: #64748b;
+  background: #f8fafc;
+}
+
+.stamp-check.c-discontinue {
+  color: #dc2626;
+}
+.stamp-check.c-discontinue:checked {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
