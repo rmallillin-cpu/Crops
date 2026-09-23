@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-ledger-line;
+  }
+
+  body {
+    background-image: linear-gradient(rgba(31, 36, 25, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(31, 36, 25, 0.045) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  ::selection {
+    background-color: #efb621;
+    color: #0e2957;
+  }
+
+  :focus-visible {
+    outline: 2px solid #163a7b;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .field-number {
+    @apply font-mono text-[11px] tracking-wide text-cavite-blue/60;
+  }
+
+  .ledger-card {
+    @apply bg-white/70 border border-ledger-line rounded-sm shadow-stamp;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm bg-cavite-blue px-5 py-2.5
+      text-sm font-semibold text-ledger-paper transition-colors hover:bg-cavite-bluedeep
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm border border-cavite-blue/30
+      bg-transparent px-5 py-2.5 text-sm font-semibold text-cavite-blue transition-colors
+      hover:bg-cavite-blue/5;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium;
+  }
+}
+
+/* Custom checkbox that pops like a stamp mark, matching the PSA form's tick-mark idiom */
+.stamp-check {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid rgba(14, 41, 87, 0.35);
+  border-radius: 3px;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.stamp-check::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transition: transform 0.15s ease;
+  background-color: currentColor;
+}
+
+.stamp-check:checked::before {
+  transform: scale(1);
+}
+
+.stamp-check.c-major {
+  color: #163a7b;
+}
+.stamp-check.c-major:checked {
+  border-color: #163a7b;
+  background: #edf1f9;
+}
+
+.stamp-check.c-priority {
+  color: #efb621;
+}
+.stamp-check.c-priority:checked {
+  border-color: #efb621;
+  background: #fef8e9;
+}
+
+.stamp-check.c-emerging {
+  color: #4c7a4e;
+}
+.stamp-check.c-emerging:checked {
+  border-color: #4c7a4e;
+  background: #eef4ee;
+}
+
+.stamp-check.c-others {
+  color: #6b6456;
+}
+.stamp-check.c-others:checked {
+  border-color: #6b6456;
+  background: #f2f0ea;
+}
+
+.stamp-check.c-discontinue {
+  color: #c23b34;
+}
+.stamp-check.c-discontinue:checked {
+  border-color: #c23b34;
+  background: #fbecea;
+}
