@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: psa-cavite-crop-portal
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.1
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: NEXTAUTH_URL
+        sync: false
+      - key: GOOGLE_SERVICE_ACCOUNT_EMAIL
+        sync: false
+      - key: GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY
+        sync: false
+      - key: GOOGLE_SHEET_ID
+        value: 1f_TGptGBNkmoJ2KCwILUSJpRef3j8YxpXOC4BqU_PoE
+      - key: ADMIN_EMAILS
+        sync: false
+      - key: SHEET_TAB_ALLOWED_USERS
+        value: AllowedUsers
+      - key: SHEET_TAB_RESPONSES
+        value: Responses
+      - key: SHEET_TAB_SUBMISSIONS
+        value: Submissions
